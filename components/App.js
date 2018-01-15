@@ -12,14 +12,14 @@ App = React.createClass({
     },
 
     getGif: function(searchingText) {
-        return new Promise((resolve, reject)=> {
-            var url = GIPHY_API_URL + '/v1/gifs/random?api_key=' + GIPHY_PUB_KEY + '&tag=' + searchingText; 
-            var xhr = new XMLHttpRequest(); 
+        return new Promise((resolve, reject) => {
+            var url = GIPHY_API_URL + '/v1/gifs/random?api_key=' + GIPHY_PUB_KEY + '&tag=' + searchingText;
+            var xhr = new XMLHttpRequest();
             xhr.open('GET', url);
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    var data = JSON.parse(xhr.responseText).data; 
-                    var gif = { 
+                    var data = JSON.parse(xhr.responseText).data;
+                    var gif = {
                         url: data.fixed_width_downsampled_url,
                         sourceUrl: data.url
                     };
@@ -27,22 +27,24 @@ App = React.createClass({
                 } else {
                     reject(new Error(xhr.status));
                 }
-            }        
+            }
             xhr.send();
-        }); 
+        });
     },
 
-    handleSearch: function(searchingText) { 
+    handleSearch: function(searchingText) {
         this.setState({
-            loading: true 
+            loading: true
         });
-        this.getGif(searchingText).then((gif) => { 
-            this.setState({ 
-                loading: false,  
-                gif: gif,  
-                searchingText: searchingText 
-            });
-        });
+        this.getGif(searchingText)
+            .then((gif) => {
+                this.setState({
+                    loading: false,
+                    gif: gif,
+                    searchingText: searchingText
+                });
+            })
+            .catch(error => console.log(error));
     },
 
     render: function() {
@@ -53,13 +55,16 @@ App = React.createClass({
             width: '90%'
         }
 
-        return ( <div style = {styles}>
-            <h1> Gif searcher </h1> 
-            <p> Find gif on <a href = 'http=://giphy'> giphy </a>. Press ENTER for start search more gifs.</p>
-            <Search onSearch = {this.handleSearch}/> 
-            <Gif loading = {this.state.loading}
-            url = {this.state.gif.url}
-            sourceUrl = {this.state.gif.sourceUrl}/> 
+        return ( 
+            <div style = {styles}>
+                <h1> Gif searcher </h1> 
+                <p> Find gif on <a href = 'http=://giphy'> giphy </a>. Press ENTER for start search more gifs.</p>
+                <Search onSearch = {this.handleSearch}/> 
+                <Gif 
+                    loading = {this.state.loading}
+                    url = {this.state.gif.url}
+                    sourceUrl = {this.state.gif.sourceUrl}
+                /> 
             </div>    
         );
     }
