@@ -8,7 +8,7 @@ App = React.createClass({
             loading: false,
             searchingText: '',
             gif: {}
-        };
+        }
     },
 
     getGif: function(searchingText) {
@@ -27,9 +27,9 @@ App = React.createClass({
                 } else {
                     reject(new Error(xhr.status));
                 }
-            };        
+            }        
             xhr.send();
-        })  
+        }); 
     },
 
     handleSearch: function(searchingText) { 
@@ -51,7 +51,7 @@ App = React.createClass({
             margin: '0 auto',
             textAlign: 'center',
             width: '90%'
-        };
+        }
 
         return ( <div style = {styles}>
             <h1> Gif searcher </h1> 
@@ -61,6 +61,6 @@ App = React.createClass({
             url = {this.state.gif.url}
             sourceUrl = {this.state.gif.sourceUrl}/> 
             </div>    
-        )
+        );
     }
 })
