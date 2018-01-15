@@ -26,8 +26,8 @@ App = React.createClass({
     },
 
     getGif: function(searchingText) {
-        return new Promise(
-        	function (resolve, reject) {
+		return new Promise(
+		function (resolve, reject) {
             const url = GIPHY_API_URL + '/v1/gifs/random?api_key=' + GIPHY_PUB_KEY + '&tag=' + searchingText;
             const xhr = new XMLHttpRequest();
             
