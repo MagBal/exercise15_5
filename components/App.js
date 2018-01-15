@@ -11,48 +11,38 @@ App = React.createClass({
         };
     },
 
-    handleSearch: function(searchingText) {
-        this.setState({
-            loading: true
-        });
-
-        this.getGif(searchingText, function(gif) {
-            this.setState({
-                loading: false,
-                gif: gif,
-                searchingText: searchingText
-            });
-        }.bind(this));
-    },
-
     getGif: function(searchingText) {
-		return new Promise(
-		function (resolve, reject) {
-            const url = GIPHY_API_URL + '/v1/gifs/random?api_key=' + GIPHY_PUB_KEY + '&tag=' + searchingText;
-            const xhr = new XMLHttpRequest();
-            
+        return new Promise((resolve, reject)=> {
+            var url = GIPHY_API_URL + '/v1/gifs/random?api_key=' + GIPHY_PUB_KEY + '&tag=' + searchingText; 
+            var xhr = new XMLHttpRequest(); 
+            xhr.open('GET', url);
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    var data = JSON.parse(xhr.responseText).data;
-                    var gif = {
+                    var data = JSON.parse(xhr.responseText).data; 
+                    var gif = { 
                         url: data.fixed_width_downsampled_url,
                         sourceUrl: data.url
-                    }
+                    };
                     resolve(gif);
                 } else {
-                    reject(new Error(this.statusText));
+                    reject(new Error(xhr.status));
                 }
-            };
-            request.onerror = function () {
-                reject(new Error(
-                   `XMLHttpRequest Error: ${this.statusText}`));
-            };
-            xhr.open('GET', url);
+            };        
             xhr.send();
+        })  
+    },
+
+    handleSearch: function(searchingText) { 
+        this.setState({
+            loading: true 
         });
-        getGif(url)
-    	.then(response => console.log('Contents: ' + response))
-    	.catch(error => console.error('Something went wrong', error));
+        this.getGif(searchingText).then((gif) => { 
+            this.setState({ 
+                loading: false,  
+                gif: gif,  
+                searchingText: searchingText 
+            });
+        });
     },
 
     render: function() {
